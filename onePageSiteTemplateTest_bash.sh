@@ -87,16 +87,16 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 " > $PROJECT_NAME.md
 
-# create new node project
+# create new node project & install required packages
 npm init -y
 npm install sass -g
 npm install uniformcss laravel-mix@latest 
 npm install --save normalize.css
 npm install flexboxgrid --save-dev
 npm install sass-loader@^12.1.0 sass resolve-url-loader@^5.0.0 --save-dev --legacy-peer-deps
-# create new node project
+# create directories
 mkdir public public/src/ public/src/css public/src/css/components  public/src/imgs public/src/js public/src/assets
-# create new node project
+# create necessary html , js ,css files for the projects
 touch  index.html public/src/css/projectstyle.scss public/src/js/app.js public/src/css/components/_partials1.scss webpack.mix.js .gitignore
 
 
@@ -117,13 +117,9 @@ mix.sass('public/src/css/projectstyle.scss', 'public/dist/css', {
    .js('public/src/js/app.js', 'public/dist/js')
    .copyDirectory('public/src/imgs', 'public/dist/imgs')
    .copyDirectory('public/src/assets', 'public/dist/assets');
- 
-
-
-
 EOF
 
-# insert logic into  public/css/main.scss
+# insert default sass logic into  public/src/css/projectstyle.scss
 cat <<EOF > public/src/css/projectstyle.scss
 /* 
 *Config Setup Grid System and framework
@@ -152,7 +148,7 @@ cat <<EOF > public/src/css/projectstyle.scss
 
 EOF
 
-# insert logic into  public/css/main.scss
+# insert logic into  public/src/css/components/_partials1.scss
 cat <<EOF > public/src/css/components/_partials1.scss
 
 
@@ -245,15 +241,16 @@ cat <<EOF > index.html
 </html>
 EOF
 
+#Insert content into .gitignore - this will prevent files/ directories from being logged byt git
 cat <<EOF > .gitignore
 /node_modules
 EOF
 
-
+# compile the default stylesheet for the project
 npm run development
 npm run production
 
-# git repo setup  
+# git repo setup , the 1st project commit and creation of branches  
 git init 
 
 git add .
