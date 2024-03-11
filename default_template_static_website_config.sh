@@ -1,20 +1,24 @@
+#!/bin/bash
+
 #Define project name
-echo "Enter project name: e.g. CompanyName Site , ToDo App"
+(){
+  echo "Enter project name: e.g. CompanyName Site , ToDo App"
 read PROJECT_NAME
 
 # Create project directory
 mkdir $PROJECT_NAME
 cd $PROJECT_NAME
-
-# Create project Structure directory
+}
+(){# Create project Structure directory
 mkdir  assets 
 
 mkdir assets/src assets/dist  assets/src/sass assets/src/js  assets/src/fonts assets/src/imgs  
-
-
+}
+(){
 touch index.html about.html  contact.html  work.html  webpack.mix.js  assets/src/sass/app.scss assets/src/js/app.js
-
-#install depenedcies for SASS
+}
+(){ 
+  #install depenedcies for SASS
 npm init -y
 npm install -D sass
 npm instal laravel-mix --save-dev
@@ -22,10 +26,10 @@ npm install laravel-mix-purgecss --save-dev
 npm install uniformcss --save-dev
 npm install webpack-livereload-plugin --save-dev
 
+}
 
 
-
-# Populate Default boilerplate files with content  
+(){# Populate Default boilerplate files with content  
 cat <<EOF > webpack.mix.js
 let mix = require('laravel-mix');
 var LiveReloadPlugin = require('webpack-livereload-plugin');
@@ -59,8 +63,8 @@ mix.webpackConfig({
 
 EOF
 
-
-# Populate index.html  
+}
+(){# Populate index.html  
 cat <<EOF > index.html
 <!doctype html>
 <html class="no-js" lang="">
@@ -103,9 +107,9 @@ cat <<EOF > index.html
 
 </html>
 EOF
+}
 
-
-
+(){
 # Create project READme 
 
 echo "# Project Title
@@ -188,7 +192,10 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 * etc
 
 " > README.md
+}
 
-	echo "Readme.md created successfully!"
+(){
 
     echo "$PROJECT_NAME  Directory was created successfully!"
+  	echo "Readme.md created successfully!"
+}

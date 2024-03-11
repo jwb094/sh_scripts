@@ -1,11 +1,11 @@
 # Prompt user for project name
-echo "Enter project name:"
-read PROJECT_NAME
-mkdir $PROJECT_NAME
-cd $PROJECT_NAME
-
+createProjectDirectory(){
+  echo "Enter project name:"
+  read PROJECT_NAME
+  mkdir $PROJECT_NAME && cd $PROJECT_NAME
+}
 # Create project READme 
-
+createProjectReadMe(){
 echo "# $PROJECT_NAME
 
 One Paragraph of project description goes here
@@ -86,27 +86,35 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 * etc
 
 " > $PROJECT_NAME.md
+}
 
 # create new node project & install required packages
+initializeNpmProjectAndInstallNpmPackages(){
 npm init -y
 npm install sass -g
 npm install uniformcss laravel-mix@latest 
 npm install --save normalize.css
 npm install flexboxgrid --save-dev
 npm install sass-loader@^12.1.0 sass resolve-url-loader@^5.0.0 --save-dev --legacy-peer-deps
+}
 # create directories
-mkdir public public/src/ public/src/css public/src/css/components  public/src/imgs public/src/js public/src/assets
+createProjecsDirectories(){
+  mkdir public public/src/ public/src/css public/src/css/components  public/src/imgs public/src/js public/src/assets
+}
 # create necessary html , js ,css files for the projects
-touch  index.html public/src/css/projectstyle.scss public/src/js/app.js public/src/css/components/_partials1.scss webpack.mix.js .gitignore
-
+createProjectsFiles(){
+  touch  index.html public/src/css/projectstyle.scss public/src/js/app.js public/src/css/components/_partials1.scss webpack.mix.js .gitignore
+}
 
 
 # Update package.json with Laravel Mix scripts
-cat package.json | jq '. + {"scripts": {"development": "mix", "watch": "mix watch", "watch-poll": "mix watch -- --watch-options-poll=1000", "hot": "mix watch --hot", "production": "mix --production"}}' > temp.json && mv temp.json package.json
-
+updateNpmScripts (){
+  cat package.json | jq '. + {"scripts": {"development": "mix", "watch": "mix watch", "watch-poll": "mix watch -- --watch-options-poll=1000", "hot": "mix watch --hot", "production": "mix --production"}}' > temp.json && mv temp.json package.json
+}
 
 # insert logic into webpack.mix.js
-cat <<EOF > webpack.mix.js
+assetsConfigSetup(){
+cat <<EOF >> webpack.mix.js
 let mix = require('laravel-mix');
 mix.sass('public/src/css/projectstyle.scss', 'public/dist/css', {
      sassOptions: {
@@ -118,9 +126,11 @@ mix.sass('public/src/css/projectstyle.scss', 'public/dist/css', {
    .copyDirectory('public/src/imgs', 'public/dist/imgs')
    .copyDirectory('public/src/assets', 'public/dist/assets');
 EOF
+}
 
 # insert default sass logic into  public/src/css/projectstyle.scss
-cat <<EOF > public/src/css/projectstyle.scss
+updateStylesheet(){
+  cat <<EOF >> public/src/css/projectstyle.scss
 /* 
 *Config Setup Grid System and framework
 */
@@ -149,13 +159,17 @@ cat <<EOF > public/src/css/projectstyle.scss
 EOF
 
 # insert logic into  public/src/css/components/_partials1.scss
-cat <<EOF > public/src/css/components/_partials1.scss
+cat <<EOF >> public/src/css/components/_partials1.scss
 
 
 EOF
+}
+
+
 
 # insert logic into index.html
-cat <<EOF > index.html
+updateIndexHtmlFile(){
+cat <<EOF >> index.html
 <!doctype html>
 <html class="no-js" lang="">
 
@@ -240,26 +254,60 @@ cat <<EOF > index.html
 
 </html>
 EOF
-
+}
 #Insert content into .gitignore - this will prevent files/ directories from being logged byt git
-cat <<EOF > .gitignore
+updateGitIgnore(){
+cat <<EOF >> .gitignore
 /node_modules
 EOF
+}
+
+createNvmrc(){
+
+  #get the latest node version
+  node -v > .nvmrc
+
+}
 
 # compile the default stylesheet for the project
-npm run development
-npm run production
+runNpmScripts(){
+  
+  npm run development
+  npm run production
 
+}
 # git repo setup , the 1st project commit and creation of branches  
-git init 
+createGitRepo(){
 
-git add .
-git commit -m "$PROJECT_NAME structure setup and initial commit"
-git branch layout 
-git branch style
-git branch layout_factor 
-git branch style_refactor
+  git init 
 
-echo "One-page template static website  setup with 
-Uniform.css, Flexbox Grid, SassLoader, Sass, and Laravel Mix node moduleas created successfully in $PROJECT_NAME directory .
-"
+  git add .
+  git commit -m "$PROJECT_NAME structure setup and initial commit"
+  git branch layout 
+  git branch style
+  git branch layout_factor 
+  git branch style_refactor
+
+}
+
+SuccessMessage(){
+
+  echo "One-page template static website  setup with 
+  Uniform.css, Flexbox Grid, SassLoader, Sass, and Laravel Mix node moduleas created successfully in $PROJECT_NAME directory ."
+
+}
+
+createProjectDirectory
+createProjectReadMe
+initializeNpmProjectAndInstallNpmPackages
+createProjecsDirectories
+createProjectsFiles
+updateNpmScripts
+assetsConfigSetup
+updateStylesheet
+updateIndexHtmlFile
+updateGitIgnore
+createNvmrc
+runNpmScripts
+createGitRepo
+SuccessMessage

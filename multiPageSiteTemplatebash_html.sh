@@ -1,169 +1,113 @@
+#!/bin/bash
+
+
+
+
+createProjectDirectory(){
 # Prompt user for project name
-echo "Enter project name:"
-read PROJECT_NAME
-mkdir $PROJECT_NAME
-cd $PROJECT_NAME
-
-# Create project READme 
-
-echo "# $PROJECT_NAME
-
-One Paragraph of project description goes here
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
-### Prerequisites
-
-What things you need to install the software and how to install them
+  echo "Enter project name:"
+  read PROJECT_NAME
+  mkdir $PROJECT_NAME && cd $PROJECT_NAME
+}  
 
 
-### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-And repeat
-
-until finished
-
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-Give an example
-
-bash
-
-### And coding style tests
-
-Explain what these tests test and why
-
-Give an example
-
-markdown
+initializeNpmProjectAndInstallNpmPackage(){
+  npm init -y
+  npm install sass -g
+  npm install uniformcss laravel-mix@latest 
+  npm install --save normalize.css
+  npm install flexboxgrid --save-dev
+  npm install sass-loader@^12.1.0 sass resolve-url-loader@^5.0.0 --save-dev --legacy-peer-deps
+}
 
 
-## Deployment
+createProjectDirectories(){
+  mkdir public public/src/ public/src/css public/src/css/pages public/src/css/components  public/src/imgs public/src/js public/src/assets
+}
 
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-list of technology / packages used for project
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **John Doe** - *Initial work* - [JohnDoe](https://github.com/JohnDoe)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
-
-" > $PROJECT_NAME.md
-
-# create new node project & install required packages
-npm init -y
-npm install sass -g
-npm install uniformcss laravel-mix@latest 
-npm install --save normalize.css
-npm install flexboxgrid --save-dev
-npm install sass-loader@^12.1.0 sass resolve-url-loader@^5.0.0 --save-dev --legacy-peer-deps
-# create directories
-mkdir public public/src/ public/src/css public/src/css/pages public/src/css/components  public/src/imgs public/src/js public/src/assets
-# create necessary html , js ,css files for the projects
-touch  work.html about.html contact.html index.html public/src/css/projectstyle.scss public/src/js/app.js public/src/css/components/_partials1.scss public/src/css/pages/_index.scss webpack.mix.js .gitignore
-
+createProjectsFiles (){
+  touch  work.html about.html contact.html index.html public/src/css/projectstyle.scss public/src/js/app.js public/src/css/components/_partials1.scss public/src/css/components/_project_mixin.scss public/src/css/pages/_index.scss webpack.mix.js .gitignore
+}
 
 # Update package.json with Laravel Mix scripts
-cat package.json | jq '. + {"scripts": {"development": "mix", "watch": "mix watch", "watch-poll": "mix watch -- --watch-options-poll=1000", "hot": "mix watch --hot", "production": "mix --production"}}' > temp.json && mv temp.json package.json
+updateNpmScript() {
+  cat package.json | jq '. + {"scripts": {"development": "mix", "watch": "mix watch", "watch-poll": "mix watch -- --watch-options-poll=1000", "hot": "mix watch --hot", "production": "mix --production"}}' > temp.json && mv temp.json package.json
+ } 
 
+assetsConfigSetup(){
+  cat <<EOF > webpack.mix.js
+  let mix = require('laravel-mix');
+  mix.sass('public/src/css/projectstyle.scss', 'public/dist/css', {
+      sassOptions: {
+        includePaths: [
+          './node_modules/uniformcss'
+        ]
+      }})
+    .js('public/src/js/app.js', 'public/dist/js')
+    .copyDirectory('public/src/imgs', 'public/dist/imgs')
+    .copyDirectory('public/src/assets', 'public/dist/assets');
+  
+EOF
+}
+projectStylesheetsUpdate(){
+# insert logic into  public/css/main.scss
+  cat <<EOF > public/src/css/projectstyle.scss
+    /* 
+    *Config Setup Grid System and framework
+    */
+    @use "../../node_modules/normalize.css/normalize.css";
+    @use "../../node_modules/flexboxgrid/css/flexboxgrid.min.css";
 
-# insert logic into webpack.mix.js
-cat <<EOF > webpack.mix.js
-let mix = require('laravel-mix');
-mix.sass('public/src/css/projectstyle.scss', 'public/dist/css', {
-     sassOptions: {
-      includePaths: [
-        './node_modules/uniformcss'
-      ]
-    }})
-   .js('public/src/js/app.js', 'public/dist/js')
-   .copyDirectory('public/src/imgs', 'public/dist/imgs')
-   .copyDirectory('public/src/assets', 'public/dist/assets');
- 
+    @use "uniform" as * with (
+      \$config: (
+        important: true,
+        colors: (
+          custom-color-1: red,
+          custom-color-2: blue
+        )
+      )
+    );
 
+      .l-container{
+        max-width:1200px;
+        margin:0 auto;
+        padding-left:2rem;
+        padding-right:2rem;
+      }
+    @import "components/partials1";
+    @import "pages/index";
 
 
 EOF
 
-# insert logic into   public/src/css/projectstyle.scss
-cat <<EOF > public/src/css/projectstyle.scss
-/* 
-*Config Setup Grid System and framework
-*/
-@use "../../node_modules/normalize.css/normalize.css";
-@use "../../node_modules/flexboxgrid/css/flexboxgrid.min.css";
-
-@use "uniform" as * with (
-  \$config: (
-    important: true,
-    colors: (
-      custom-color-1: red,
-      custom-color-2: blue
-    )
-  )
-);
-
-  .l-container{
-    max-width:1200px;
-    margin:0 auto;
-    padding-left:2rem;
-    padding-right:2rem;
-  }
-@import "components/partials1";
-@import "pages/index";
+# insert logic into  public/css/main.scss
+  cat <<EOF > public/src/css/components/_partials1.scss
 
 
 EOF
 
-# insert logic into  public/src/css/components/_partials1.scss
-cat <<EOF > public/src/css/components/_partials1.scss
-
-
-EOF
-# insert logic into  public/src/css/pages/_index.scss
-cat <<EOF > public/src/css/pages/_index.scss
+  cat <<EOF > public/src/css/pages/_index.scss
 
 
 EOF
 
-# Insert html5 boilerplate content into index.html
+cat <<EOF > public/src/css/components/_project_mixin.scss
+    //template
+    @mixin corner-icon(\$name, \$top-or-bottom, \$lefåt-or-right) {
+    .icon-#{$name} {
+        background-image: url("/icons/#{$name}.svg");
+        position: absolute;
+        #{$top-or-bottom}: 0;
+        #{$left-or-right}: 0;
+    }
+    }
+
+EOF
+}
+
+htmlBoilerplateTemplate(){
+# insert logic into index.html
 cat <<EOF > index.html
 <!doctype html>
 <html class="no-js" lang="">
@@ -248,7 +192,7 @@ cat <<EOF > index.html
 
 </html>
 EOF
-# Insert html5 boilerplate content into work.html
+
 cat <<EOF > work.html
 <!doctype html>
 <html class="no-js" lang="">
@@ -333,7 +277,7 @@ cat <<EOF > work.html
 
 </html>
 EOF
-# Insert html5 boilerplate content into about.html
+
 cat <<EOF > about.html
 <!doctype html>
 <html class="no-js" lang="">
@@ -420,7 +364,6 @@ cat <<EOF > about.html
 </html>
 EOF
 
-# Insert html5 boilerplate content into Contact.html
 cat <<EOF > contact.html
 <!doctype html>
 <html class="no-js" lang="">
@@ -505,17 +448,113 @@ cat <<EOF > contact.html
 
 </html>
 EOF
+} 
 
-#Insert content into .gitignore - this will prevent files/ directories from being logged byt git
+
+createProjectReadMe(){
+
+echo "# $PROJECT_NAME
+
+One Paragraph of project description goes here
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+What things you need to install the software and how to install them
+
+
+### Installing
+
+A step by step series of examples that tell you how to get a development env running
+
+Say what the step will be
+
+And repeat
+
+until finished
+
+
+End with an example of getting some data out of the system or using it for a little demo
+
+## Running the tests
+
+Explain how to run the automated tests for this system
+
+### Break down into end to end tests
+
+Explain what these tests test and why
+
+Give an example
+
+bash
+
+### And coding style tests
+
+Explain what these tests test and why
+
+Give an example
+
+markdown
+
+
+## Deployment
+
+Add additional notes about how to deploy this on a live system
+
+## Built With
+
+list of technology / packages used for project
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+
+## Authors
+
+* **John Doe** - *Initial work* - [JohnDoe](https://github.com/JohnDoe)
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+* Hat tip to anyone whose code was used
+* Inspiration
+* etc
+
+" > $PROJECT_NAME.md
+}
+
+
+hiddenFilesUpdate(){
 cat <<EOF > .gitignore
 /node_modules
 EOF
+}
 
-# compile the default stylesheet for the project
-npm run development
-npm run production
+CreateNvmrc(){
+#get the latest node version
+node -v > .nvmrc
+}
 
-# git repo setup , the 1st project commit and creation of branches  
+runNpmScripts(){
+
+  npm run development
+  npm run production
+}
+  
+
+createGitRepo(){
 git init 
 
 git add .
@@ -525,6 +564,28 @@ git branch style
 git branch layout_factor 
 git branch style_refactor
 
+}
+
+
+SuccessMessage(){
 echo "One-page template static website  setup with 
 Uniform.css, Flexbox Grid, SassLoader, Sass, and Laravel Mix node moduleas created successfully in $PROJECT_NAME directory .
 "
+
+echo "git pull origin <branch name> --no-ff if  "
+}
+
+createProjectDirectory
+initializeNpmProjectAndInstallNpmPackage
+updateNpmScript
+createProjectDirectories
+createProjectsFiles
+assetsConfigSetup
+projectStylesheetsUpdate
+htmlBoilerplateTemplate
+createProjectReadMe
+hiddenFilesUpdate
+CreateNvmrc
+runNpmScripts
+createGitRepo
+SuccessMessage
