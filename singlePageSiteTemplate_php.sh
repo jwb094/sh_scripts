@@ -5,6 +5,15 @@ createProjectDirectory(){
     echo "Enter project name:"
     read project_name
     mkdir $project_name && cd $project_name
+
+
+             # Check the exit status
+    if [ $? -eq 0 ]; then
+        echo "Project Directory was created and system has enter the directory "
+    else
+        echo "Command failed"
+        exit;
+    fi
 }  
 
 initializeNpmProject(){
@@ -13,23 +22,52 @@ initializeNpmProject(){
 
 installNpmPackages(){
     npm install sass -g
-    npm install uniformcss laravel-mix@latest 
+    npm install uniformcss 
+    npm laravel-mix@latest 
     npm install --save normalize.css
     npm install flexboxgrid --save-dev
     npm install sass-loader@^12.1.0 sass resolve-url-loader@^5.0.0 --save-dev --legacy-peer-deps
+
+
+             # Check the exit status
+    if [ $? -eq 0 ]; then
+        echo "The Following packages haved been installed sass,uniformcss,laravel-mix,normalize.css,flexboxgrid, sass-loader & resolve-url-loader"
+    else
+        echo "Command failed"
+        exit;
+    fi
 }
 
 npmScriptUpdate(){
     cat package.json | jq '. + {"scripts": {"development": "mix", "watch": "mix watch", "watch-poll": "mix watch -- --watch-options-poll=1000", "hot": "mix watch --hot", "production": "mix --production"}}' > temp.json && mv temp.json package.json
 
+        if [ $? -eq 0 ]; then
+        echo "The npm scripts have been updated to work alongside the latest laravelmix version "
+    else
+        echo "Command failed"
+        exit;
+    fi
 }
 
 createProjectDirectories(){
      mkdir public public/src/ public/src/css public/src/css/components  public/src/imgs public/src/js public/src/assets
+
+         if [ $? -eq 0 ]; then
+        echo "Project subdrectory have created"
+    else
+        echo "Command failed"
+        exit;
+    fi
 }
 
 createProjectsFiles(){
-    touch  index.php public/src/css/projectstyle.scss public/src/js/app.js public/src/css/_project_mixins.scss public/src/css/_typography.scss public/src/css/components/_partials1.scss webpack.mix.js .gitignore $PROJECT_NAME.md
+    touch  index.php public/src/css/projectstyle.scss public/src/js/app.js public/src/css/_project_mixins.scss public/src/css/_typography.scss public/src/css/components/_partials1.scss webpack.mix.js .gitignore $project_name.md
+             if [ $? -eq 0 ]; then
+        echo "Project files have created with their boilerplate code"
+    else
+        echo "Command failed"
+        exit;
+    fi
 }
 
 
@@ -52,6 +90,14 @@ cat <<EOF > webpack.mix.js
 
 
 EOF
+
+
+         if [ $? -eq 0 ]; then
+        echo "Project subdrectory have created"
+    else
+        echo "Command failed"
+        exit;
+    fi
 }
 
 stylesheetUpdate(){
@@ -61,8 +107,8 @@ cat <<EOF > public/src/css/projectstyle.scss
     /* 
     *Config Setup Grid System and framework
     */
-    @use "../../node_modules/normalize.css/normalize.css";
-    @use "../../node_modules/flexboxgrid/css/flexboxgrid.min.css";
+    @use "../../../node_modules/normalize.css/normalize.css";
+    @use "../../../node_modules/flexboxgrid/css/flexboxgrid.min.css";
 
     @use "uniform" as * with (
     \$config: (
@@ -153,7 +199,7 @@ EOF
 
          # Check the exit status
     if [ $? -eq 0 ]; then
-        echo "Commands was successful"
+        echo "The project assets files have had their config setup successfully"
     else
         echo "Command failed"
         exit;
@@ -164,14 +210,14 @@ EOF
 
 SinglePageUpdate(){
 cat <<EOF > index.php
-    <?php ?>
+        <?php ?>
         <!doctype html>
         <html class="no-js" lang="">
 
         <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>$PROJECT_NAME</title>
+        <title></title>
         <link rel="stylesheet" href="public/dist/css/projectstyle.css">
         <meta name="description" content="">
 
@@ -192,23 +238,23 @@ cat <<EOF > index.php
         <body>
         <nav class="l-container"> 
             <div class="row">
-                <div class="col-xs-12">LOGO</div>
-                <div class="col-xs-12">
+                <div class="col-xs-12 col-md-4">LOGO</div>
+                <div class="col-xs-12 col-md-4">
                     <ul class="flex flex-col md.flex-row">
-                        <li>    </li>
-                        <li>    </li>
-                        <li>    </li>
-                        <li>    </li>
-                        <li>    </li>
+                        <li> menu item 1   </li>
+                        <li> menu item 2   </li>
+                        <li> menu item 3   </li>
+                        <li> menu item 4   </li>
+                        <li> menu item 5   </li>
                     </ul>
                 </div>
-                <div class="col-xs-12">ICONS</div>
+                <div class="col-xs-12 col-md-4 flex justify-content-end">ICONS</div>
             </div>
         </nav>
         <main>
             <?php
             // Array of colors
-            \$colors = ["digital-green", "yellow-light", "blue-light", "turquoise-light", "green-light", "orange-light", "lilac-light"];
+            $colors = ["digital-green", "yellow-light", "blue-light", "turquoise-light", "green-light", "orange-light", "lilac-light"];
         ?>
             <section data-component-name="" class="">
             <div class="l-container">
@@ -218,8 +264,8 @@ cat <<EOF > index.php
 
         <?php
                 // Loop through colors and create an option for each color
-                foreach (\$colors as \$color) {
-                    echo "<li> <?=\$color</li>";
+                foreach ($colors as $color) {
+                    echo "<li> $color </li>";
                 }
             ?>
             </ul>
@@ -246,52 +292,52 @@ cat <<EOF > index.php
             </section>
         </main>
         <!-- Add your site or application content here -->
-        <p>Welcome to $PROJECT_NAME world! This is HTML5 Boilerplate.</p>
+        <p class="l-container">Welcome to  world! This is HTML5 Boilerplate.</p>
         <script src="public/dist/js/app.js"></script>
 
             <?php
             // Array of footer links
-            \$footerLinks = ["Home", "Work", "Contact", "People",];
-            \$socialLinks = ["Fb", "Ln", "X", "Insta"];
+            $footerLinks = ["Home", "Work", "Contact", "People",];
+            $socialLinks = ["Fb", "Ln", "X", "Insta"];
         ?>
         <footer class>
             <div class="l-container">
         <div class="row">
-        <div>LOGO</div>
-            <div>
-                    <ul>
+        <div class="col-xs-12 col-md-4">LOGO</div>
+        <div class="col-xs-12 col-md-4">L
+                    <ul class="flex flex-col md.flex-row justify-content-between">
 
         <?php
                 // Loop through colors and create an option for each color
-                foreach (\$footerLinks as \$link) {
-                    echo "<li class=""> <?=\$link</li>";
+                foreach ($footerLinks as $link) {
+                    echo "<li class=''>$link</li>";
                 }
             ?>
             </ul>
             </div>
-            <div>
-                        <ul>
+            <div class="col-xs-12 col-md-4 flex justify-content-end">
+            <ul class="flex flex-col md.flex-row justify-content-between">
 
         <?php
                 // Loop through colors and create an option for each color
-                foreach (\$socialLinks as \$slink) {
-                    echo "<li class=""> <?=\$slink</li>";
+                foreach ($socialLinks as $slink) {
+                    echo "<li class=''>$slink</li>";
                 }
             ?>
             </ul>
             </div>
-                </div>
-            </div>
+         
         </footer>
         </body>
 
         </html>
+
 EOF
 
 
          # Check the exit status
     if [ $? -eq 0 ]; then
-        echo "Commands was successful"
+        echo "the $project_name index.php has been created and boilerplate has been inserted in the file"
     else
         echo "Command failed"
         exit;
@@ -299,7 +345,7 @@ EOF
 }
 
 projectReadMeUpdate(){
-echo "# $PROJECT_NAME
+echo "# $project_name
 
 One Paragraph of project description goes her
 ## Getting Started
@@ -391,9 +437,14 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 - npm run production
 - npm run development
 
-" > $PROJECT_NAME.md
+" > $project_name.md
 
-    
+       if [ $? -eq 0 ]; then
+        echo "the $project_name.md has been created"
+    else
+        echo "Command failed"
+        exit;
+    fi 
 }
 
 hiddenFilesUpdate(){
@@ -408,7 +459,7 @@ node -v > .nvmrc
 
          # Check the exit status
     if [ $? -eq 0 ]; then
-        echo "Commands was successful"
+        echo ".gitignore &  .nvmrc have been created"
     else
         echo "Command failed"
         exit;
@@ -423,7 +474,7 @@ runNpmScripts(){
 
              # Check the exit status
     if [ $? -eq 0 ]; then
-        echo "Commands was successful"
+        echo "both development and production script were ran successful"
     else
         echo "Command failed"
         exit;
@@ -434,7 +485,7 @@ createGitRepo(){
     git init 
 
     git add .
-    git commit -m "$PROJECT_NAME structure setup and initial commit"
+    git commit -m "$project_name structure setup and initial commit"
     git branch layout 
     git branch style
     git branch layout_factor 
@@ -453,7 +504,7 @@ createGitRepo(){
 
 SuccessMessage(){
     echo "One-page template static website (PHP/HTML/CSS/JS) setup with 
-    Uniform.css, Flexbox Grid, SassLoader, Sass, and Laravel Mix node moduleas created successfully in $PROJECT_NAME directory .
+    Uniform.css, Flexbox Grid, SassLoader, Sass, and Laravel Mix node moduleas created successfully in $project_name directory .
     "
 }
 
