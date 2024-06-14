@@ -29,7 +29,7 @@ createProjectDirectories(){
 }
 
 createProjectsFiles(){
-    touch  index.php public/src/css/projectstyle.scss public/src/js/app.js public/src/css/_project_mixins.scss public/src/css/components/_partials1.scss webpack.mix.js .gitignore $PROJECT_NAME.md
+    touch  index.php public/src/css/projectstyle.scss public/src/js/app.js public/src/css/_project_mixins.scss public/src/css/_typography.scss public/src/css/components/_partials1.scss webpack.mix.js .gitignore $PROJECT_NAME.md
 }
 
 
@@ -80,6 +80,7 @@ cat <<EOF > public/src/css/projectstyle.scss
         padding-left:2rem;
         padding-right:2rem;
     }
+    @import "typography";
     @import "components/partials1";
     @import "project_mixin";
 EOF
@@ -87,6 +88,52 @@ EOF
 # insert logic into  public/css/main.scss
 cat <<EOF > public/src/css/components/_partials1.scss
 
+
+EOF
+
+# insert logic into  public/css/main.scss
+cat <<EOF > public/src/css/components/_typography.scss
+    @font-face {
+        font-family: 'Font-Name';
+        src: url('..');
+        src: url('../ttf') format('truetype'),
+        url('../.woff') format('woff'),
+        url('../.woff2') format('woff2');
+
+        font-display: swap;
+
+    }
+
+    *{
+     //font-family:;   
+    }
+
+    p{
+     //font-family:;   
+    }
+
+    h1,h2,h4,h4,h5,h6{
+     //font-family:;   
+    }
+
+    h1,.h1{
+     //font-family:;   
+    }
+    h2,.h2{
+     //font-family:;   
+    }
+    h3,.h3{
+     //font-family:;   
+    }
+    h4,.h4{
+     //font-family:;   
+    }
+    h5,.h5{
+     //font-size:;   
+    }
+     h6,.h6{
+     //font-family:;   
+    }
 
 EOF
 
@@ -103,6 +150,14 @@ cat <<EOF > public/src/css/components/_project_mixin.scss
     }
 
 EOF
+
+         # Check the exit status
+    if [ $? -eq 0 ]; then
+        echo "Commands was successful"
+    else
+        echo "Command failed"
+        exit;
+    fi
 
 }
 
@@ -232,6 +287,15 @@ cat <<EOF > index.php
 
         </html>
 EOF
+
+
+         # Check the exit status
+    if [ $? -eq 0 ]; then
+        echo "Commands was successful"
+    else
+        echo "Command failed"
+        exit;
+    fi
 }
 
 projectReadMeUpdate(){
@@ -322,7 +386,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 * Inspiration
 * etc
 
-# Scripts Mostly USe
+# Scripts Mostly Use
 - php -S localhost:2222
 - npm run production
 - npm run development
@@ -340,12 +404,30 @@ EOF
 
 #get the latest node version
 node -v > .nvmrc
+
+
+         # Check the exit status
+    if [ $? -eq 0 ]; then
+        echo "Commands was successful"
+    else
+        echo "Command failed"
+        exit;
+    fi
 }
 
 
 runNpmScripts(){
     npm run development
     npm run production
+
+
+             # Check the exit status
+    if [ $? -eq 0 ]; then
+        echo "Commands was successful"
+    else
+        echo "Command failed"
+        exit;
+    fi
 }
 
 createGitRepo(){
@@ -358,6 +440,14 @@ createGitRepo(){
     git branch layout_factor 
     git branch style_refactor
 
+
+             # Check the exit status
+    if [ $? -eq 0 ]; then
+        echo "Commands was successful"
+    else
+        echo "Command failed"
+        exit;
+    fi
 }
 
 
