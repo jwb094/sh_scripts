@@ -138,7 +138,7 @@ cat <<EOF > public/src/css/components/_partials1.scss
 EOF
 
 # insert logic into  public/css/main.scss
-cat <<EOF > public/src/css/components/_typography.scss
+cat <<EOF > public/src/css/_typography.scss
     @font-face {
         font-family: 'Font-Name';
         src: url('..');
@@ -254,8 +254,21 @@ cat <<EOF > index.php
         <main>
             <?php
             // Array of colors
+           
+
+            $sectionTitle1 = "Lorem ipsum Title 1";
+            $sectionTitle2 = "Lorem ipsum Title 2";
+            $sectionTitle3 = "Lorem ipsum Title 3";
+            $sectionTitle4 = "Lorem ipsum Title 4";
+            $contextSml = "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laborum voluptatibus nemo";
+            $contextMed = "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laborum voluptatibus nemo cumque odio accusantium. Dicta, commodi";
+            $contextLg = "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laborum voluptatibus nemo cumque odio accusantium. Dicta, commodi voluptas fugiat nostrum itaque laborum voluptate corporis adipisci nulla error suscipit libero nesciunt. Magnam!t nostrum itaque laborum voluptate corporis adipisci nulla error suscipit libero nesciunt. Magnam!";
+            $footerContent1 = "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laborum voluptatibus nemo cumque odio accusantium. Dicta, commodi voluptas fugiat nostrum itaque laborum";
+            $footerContent2 = "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laborum voluptatibus nemo cumque odio accusantium. Dicta, commodi voluptas fugiat nostrum itaque laborum";
+            $testominalscontext = "Lorem ipsum dolor sit amet consectetur, adipisicing elit."
+            $defaultColors = ["black", "white", "gray-500"];
             $colors = ["digital-green", "yellow-light", "blue-light", "turquoise-light", "green-light", "orange-light", "lilac-light"];
-        ?>
+            ?>
             <section data-component-name="" class="">
             <div class="l-container">
                 <div class="row">
@@ -281,14 +294,44 @@ cat <<EOF > index.php
                 </div>
             </section>
             <section data-component-name class="" id="">
+            <div class="l-container">
+                <div class="row">
+                    <div class="col-xs-12 col-md-6"></div>
+                    <div class="col-xs-12 col-md-6"></div>
+                </div>
+                </div>
             </section>
             <section data-component-name class="" id="">
+            <div class="l-container">
+                <div class="row">
+                    <div class="col-xs-12 col-md-6"></div>
+                    <div class="col-xs-12 col-md-6"></div>
+                </div>
+                </div>
             </section>
             <section data-component-name class="" id="">
+            <div class="l-container">
+                <div class="row">
+                    <div class="col-xs-12 col-md-6"></div>
+                    <div class="col-xs-12 col-md-6"></div>
+                </div>
+                </div>
             </section>
             <section data-component-name class="" id="">
+            <div class="l-container">
+                <div class="row">
+                    <div class="col-xs-12 col-md-6"></div>
+                    <div class="col-xs-12 col-md-6"></div>
+                </div>
+                </div>
             </section>
-            <section data-component-name class="">
+            <section data-component-name class="" id="">
+            <div class="l-container">
+                <div class="row">
+                    <div class="col-xs-12 col-md-6"></div>
+                    <div class="col-xs-12 col-md-6"></div>
+                </div>
+                </div>
             </section>
         </main>
         <!-- Add your site or application content here -->
